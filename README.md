@@ -1,30 +1,12 @@
-# gshop
+# 基于Vue外卖项目
 
-> A Vue.js project
+## 项目简介
 
-## Build Setup
+目前所有页面的数据是静态的
 
-``` bash
-# install dependencies
-npm install
+## 涉及技术
 
-# serve with hot reload at localhost:8080
-npm run dev
+## 构架步骤
 
-# build for production with minification
-npm run build
+## 作者信息
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
