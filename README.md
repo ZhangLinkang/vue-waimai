@@ -9,6 +9,7 @@
 - Vue-cli（Vue脚手架）
 - spwer
 - webpack
+- axios
 
 ## 构架步骤
 

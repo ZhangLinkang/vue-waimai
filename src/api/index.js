@@ -1,4 +1,16 @@
 /*
-与后台交换模块
+包含n个接口请求函数
  */
 import ajax from './ajax'
+//const BASE_URL ='http://localhost:4000'
+const BASE_URL ='/api';
+
+/**
+ * 根据经纬度获取位置信息
+ */
+export const reqAddress = (geohash) => ajax(`${BASE_URL}/position/${geohash}`)
+
+/**
+ * 获取食品分类列表
+ */
+export const reqFoodTypes = () => ajax(`${BASE_URL}/index_category`)
