@@ -24,3 +24,4 @@ git commit -m "first commit"
 git remote add origin https://github.com/ZhangLinkang/vue-waimai.git
 git push -u origin master
 ```
+
