@@ -6,7 +6,21 @@
 
 ## 涉及技术
 
+- Vue-cli（Vue脚手架）
+- spwer
+- webpack
+
 ## 构架步骤
 
 ## 作者信息
 
+## 备注
+
+```
+echo "# vue-waimai" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/ZhangLinkang/vue-waimai.git
+git push -u origin master
+```
