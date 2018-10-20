@@ -9,12 +9,11 @@
 
     import FooterGuide from './components/FooterGuide/FooterGuide.vue'
     import {reqFoodTypes} from './api'
-
     export default {
 
-        async mounted() {
+        async mounted () {
             const result = await reqFoodTypes()
-            console.log(result);
+            console.log(result)
         },
         components: {
             FooterGuide
@@ -23,7 +22,6 @@
 </script>
 
 <style lang="stylus" ref="stylesheet/stylus">
-
     .app
         width 100%
         height 100%
