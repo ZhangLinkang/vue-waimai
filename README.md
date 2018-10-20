@@ -7,11 +7,22 @@
 ## 涉及技术
 
 - Vue-cli（Vue脚手架）
-- spwer
+- swiper
 - webpack
-- axios
+- axios（用来处理ajax）
+- stylus（样式预编译器）
 
 ## 构架步骤
+
+```shell
+#第一步 检出项目代码
+$git clone https://github.com/ZhangLinkang/vue-waimai.git
+#第二步 进入项目并安装依赖
+$cd <dirname>
+$npm install
+#第三步 进入项目开发模式
+$npm start 或者 $npm run dev
+```
 
 ## 作者信息
 
