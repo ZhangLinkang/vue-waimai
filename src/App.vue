@@ -6,14 +6,21 @@
 </template>
 
 <script>
+
+    import {mapActions} from 'vuex'
     import FooterGuide from './components/FooterGuide/FooterGuide.vue'
-    import actions from './store/actions'
-    import store from './store'
+    //import actions from './store/actions'
+    //import store from './store'
     export default {
 
         mounted() {
-            actions.getAddress(store,store.state);
-            actions.getCategorys(store)
+            //actions.getAddress(store,store.state);
+            //actions.getCategorys(store)
+            //this.$store.dispath('getAddress');
+            this.getAddress()
+        },
+        methods: {
+            ...mapActions(['getAddress'])
         },
 
         components: {
