@@ -13,8 +13,9 @@
                     <div :class="{on:loginWay}">
                         <section class="login_message">
                             <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
-                            <button :disabled="!rightPhone" class="get_verification" :class="{right_phone: rightPhone}" @click.prevent="getCode()">
-                               {{computeTime>0 ? `已发送(${computeTime}s)`: '获取验证码'}}
+                            <button :disabled="!rightPhone" class="get_verification" :class="{right_phone: rightPhone}"
+                                    @click.prevent="getCode()">
+                                {{computeTime>0 ? `已发送(${computeTime}s)`: '获取验证码'}}
                             </button>
                         </section>
                         <section class="login_verification">
@@ -31,10 +32,11 @@
                                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
                             </section>
                             <section class="login_verification">
-                                <input type="tel" maxlength="8" placeholder="密码">
-                                <div class="switch_button off">
-                                    <div class="switch_circle"></div>
-                                    <span class="switch_text">...</span>
+                                <input type="text" maxlength="8" placeholder="密码" v-if="showPwd" v-model="pwd">
+                                <input type="password" maxlength="8" placeholder="密码" v-else v-model="pwd">
+                                <div class="switch_button" :class="{on: showPwd, off:!showPwd}"  @click="showPwd = !showPwd">
+                                    <div class="switch_circle" :class="{right: showPwd}"></div>
+                                    <span class="switch_text">{{showPwd ? 'adb': '...'}}</span>
                                 </div>
                             </section>
                             <section class="login_message">
@@ -61,7 +63,9 @@
             return {
                 loginWay: true,
                 phone: '',
-                computeTime : 0     //计时的时间
+                computeTime: 0,    //计时的时间
+                showPwd: false,
+                pwd:''
             }
         },
         computed: {
@@ -70,17 +74,17 @@
             }
         },
         methods: {
-            getCode(){
+            getCode () {
                 //如果当前没有计时
-                if(!this.computeTime) {
-                    this.computeTime = 60;
-                    const intervalId = setInterval(()=>{
-                        this.computeTime --;
-                        if(this.computeTime <=0){
+                if (!this.computeTime) {
+                    this.computeTime = 60
+                    const intervalId = setInterval(() => {
+                        this.computeTime--
+                        if (this.computeTime <= 0) {
                             //停止计时
                             clearInterval(intervalId)
                         }
-                    },1000)
+                    }, 1000)
                 }
                 //console.log('发送验证码');
                 //启动倒计时
@@ -192,6 +196,8 @@
                                     background #fff
                                     box-shadow 0 2px 4px 0 rgba(0, 0, 0, .1)
                                     transition transform .3s
+                                    &.right
+                                        transform translateX(27px)
                         .login_hint
                             margin-top 12px
                             color #999
