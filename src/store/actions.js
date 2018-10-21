@@ -11,6 +11,7 @@ import {
 import {
     reqAddress,
     reqCategorys,
+    reqShops,
 } from '../api'
 
 export default {
@@ -39,8 +40,12 @@ export default {
 
     async getShops ({commit, state}) {
         const {latitude, longitude} = state
-        const shops = await reqShops({latitude, longitude})
-        commit(RECEIVE_SHOPS, {shops})
+        const result = await reqShops({latitude, longitude})
+        if(result.code === 0) {
+            const shops = result.data
+            commit(RECEIVE_SHOPS, {shops})
+        }
+
     }
     //异步湖区食品分类列表
     //异步获取商家列表
