@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="login_content">
-                <form>
+                <form @submit.prevent="login">
                     <div :class="{on:loginWay}">
                         <section class="login_message">
                             <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
@@ -19,7 +19,7 @@
                             </button>
                         </section>
                         <section class="login_verification">
-                            <input type="tel" maxlength="8" placeholder="验证码">
+                            <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
                         </section>
                         <section class="login_hint">
                             温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -29,18 +29,19 @@
                     <div :class="{on:!loginWay}">
                         <section>
                             <section class="login_message">
-                                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                                <input type="text" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
                             </section>
                             <section class="login_verification">
                                 <input type="text" maxlength="8" placeholder="密码" v-if="showPwd" v-model="pwd">
                                 <input type="password" maxlength="8" placeholder="密码" v-else v-model="pwd">
-                                <div class="switch_button" :class="{on: showPwd, off:!showPwd}"  @click="showPwd = !showPwd">
+                                <div class="switch_button" :class="{on: showPwd, off:!showPwd}"
+                                     @click="showPwd = !showPwd">
                                     <div class="switch_circle" :class="{right: showPwd}"></div>
                                     <span class="switch_text">{{showPwd ? 'adb': '...'}}</span>
                                 </div>
                             </section>
                             <section class="login_message">
-                                <input type="text" maxlength="11" placeholder="验证码">
+                                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
                                 <img class="get_verification" src="./images/captcha.svg" alt="captcha">
                             </section>
                         </section>
@@ -53,19 +54,29 @@
                 <i class="iconfont icon-fanhui"></i>
             </a>
         </div>
+
+        <AlertTip :alertText="alertText" :showAlter="showAlert" v-show="showAlert" @closeTip="closeTip"></AlertTip>
     </section>
 </template>
 
 <script>
+
+    import AlertTip from '../../components/AlterTip/AlertTip.vue'
+
     export default {
 
         data () {
             return {
                 loginWay: true,
-                phone: '',
-                computeTime: 0,    //计时的时间
+                phone: '',          //手机号
+                computeTime: 0,     //计时的时间
                 showPwd: false,
-                pwd:''
+                pwd: '',            //密码
+                code: '',           //短信验证码
+                captcha: '',        //图文验证码
+                name: '',            //账号
+                alertText: '',       //提示文本
+                showAlert: false,
             }
         },
         computed: {
@@ -74,6 +85,7 @@
             }
         },
         methods: {
+            // 异步获取短信验证码
             getCode () {
                 //如果当前没有计时
                 if (!this.computeTime) {
@@ -89,7 +101,45 @@
                 //console.log('发送验证码');
                 //启动倒计时
                 //发送ajax请求（向制定手机号码发送短信验证码）
+            },
+            // 异步登录
+            login () {
+                // 表单数据验证
+                if (this.loginWay) {      //短信登录
+                    const {phone, code} = this
+                    if (!this.rightPhone) {
+                        //手机号不正确
+                        this.showAlter('手机号码不正确')
+                    } else if (!/^\d{6}$/.test(code)) {
+                        // 验证码必须是6为数字
+                        this.showAlter('验证码不正确')
+                    }
+                } else {                //用户名登录
+                    const {name, pwd, captcha} = this
+                    if (!name) {
+                        //用户名必须制定
+                        this.showAlter('用户名不能为空')
+                    } else if (!pwd) {
+                        //密码必须制定
+                        this.showAlter('密码不能为空')
+                    } else if (!captcha) {
+                        //验证码必须制定
+                        this.showAlter('请输入验证码')
+                    }
+                }
+            },
+            showAlter (text) {
+                this.showAlert = true
+                this.alertText = text
+            },
+
+            closeTip () {
+                this.showAlert = false
             }
+        },
+
+        components: {
+            AlertTip
         }
     }
 </script>
