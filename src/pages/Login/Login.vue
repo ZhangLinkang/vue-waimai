@@ -42,7 +42,8 @@
                             </section>
                             <section class="login_message">
                                 <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                                <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                                <img class="get_verification" src="http://localhost:4000/captcha" ref="captcha"
+                                     @click="getCaptcha">
                             </section>
                         </section>
                     </div>
@@ -55,14 +56,15 @@
             </a>
         </div>
 
-        <AlertTip :alertText="alertText" :showAlter="showAlert" v-show="showAlert" @closeTip="closeTip"></AlertTip>
+        <AlertTip :alertText="alertText" v-show="showAlert" @closeTip="closeTip"></AlertTip>
     </section>
 </template>
 
 <script>
-
+    //import Vuex from 'vuex'
     import AlertTip from '../../components/AlterTip/AlertTip.vue'
-
+    import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
+    import actions from '../../store/actions'
     export default {
 
         data () {
@@ -86,7 +88,7 @@
         },
         methods: {
             // 异步获取短信验证码
-            getCode () {
+            async getCode () {
                 //如果当前没有计时
                 if (!this.computeTime) {
                     this.computeTime = 60
@@ -97,42 +99,88 @@
                             clearInterval(intervalId)
                         }
                     }, 1000)
+                    //发送ajax请求（向指定手机号码发送短信验证码）
+                    const result = reqSendCode(this.phone)
+                    if (result.code === 1) {
+                        //显示提示
+                        this.showAlert('验证码不正确')
+                        //停止计时
+                        if (this.computeTime) {
+                            this.computeTime = 0
+                            clearInterval(intervalId)
+                        }
+                    } else {
+                        console.log('验证码正确')
+                    }
                 }
                 //console.log('发送验证码');
                 //启动倒计时
                 //发送ajax请求（向制定手机号码发送短信验证码）
             },
+            //获取图文验证码
+            getCaptcha () {
+                //每次制定的src要不一样
+                //event.target.src = 'http://localhost:4000/captcha?' + Date.now()
+                this.$refs.captcha.src = 'http://localhost:4000/captcha?' + Date.now()
+            },
             // 异步登录
-            login () {
+            async login () {
+                let result
                 // 表单数据验证
                 if (this.loginWay) {      //短信登录
                     const {phone, code} = this
                     if (!this.rightPhone) {
                         //手机号不正确
-                        this.showAlter('手机号码不正确')
+                        this.showAlertMsg('手机号码不正确')
+                        return
                     } else if (!/^\d{6}$/.test(code)) {
                         // 验证码必须是6为数字
-                        this.showAlter('验证码不正确')
+                        this.showAlertMsg('验证码不正确')
+                        return
+                    }
+                    result = await reqSmsLogin(phone, code)
+                    if (result.code === 0) {
+                        const user = result.data
+                    } else {
+                        const msg = result.msg
                     }
                 } else {                //用户名登录
                     const {name, pwd, captcha} = this
                     if (!name) {
                         //用户名必须制定
-                        this.showAlter('用户名不能为空')
+                        this.showAlertMsg('用户名不能为空')
+                        return
                     } else if (!pwd) {
                         //密码必须制定
-                        this.showAlter('密码不能为空')
+                        this.showAlertMsg('密码不能为空')
+                        return
                     } else if (!captcha) {
                         //验证码必须制定
-                        this.showAlter('请输入验证码')
+                        this.showAlertMsg('请输入验证码')
+                        return
                     }
+                    //发送ajax请求密码登录
+                    result = await reqPwdLogin({name, pwd, captcha})
                 }
+                //根据结果数据处理
+                if (result.code === 0) {
+                    const user = result.data
+                    //将user保存到vuex的state
+                    actions.recordUser(this.$store,user)
+                    //去个人中心页面
+                    this.$router.replace('/profile')
+                } else {
+                    const msg = result.msg
+                    this.getCaptcha()
+                    this.showAlertMsg(msg)
+                }
+
             },
-            showAlter (text) {
+            showAlertMsg (text) {
                 this.showAlert = true
                 this.alertText = text
             },
-
+            //关闭弹出框
             closeTip () {
                 this.showAlert = false
             }

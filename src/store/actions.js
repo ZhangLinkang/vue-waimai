@@ -5,7 +5,8 @@
 import {
     RECEIVE_ADDRESS,
     RECEIVE_CATEGORYS,
-    RECEIVE_SHOPS
+    RECEIVE_SHOPS,
+    RECEIVE_USER_INFO
 } from './mutation-types'
 
 import {
@@ -45,8 +46,10 @@ export default {
             const shops = result.data
             commit(RECEIVE_SHOPS, {shops})
         }
+    },
 
+    //同步记录用户信息
+    recordUser({commit},userInfo) {
+        commit(RECEIVE_USER_INFO,{userInfo})
     }
-    //异步湖区食品分类列表
-    //异步获取商家列表
 }
