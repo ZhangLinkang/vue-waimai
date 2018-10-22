@@ -2,12 +2,13 @@
     <section class="msite">
         <!--首页头部-->
         <HeaderTop :title="address.name">
-      <span class="header_search" slot="left">
-        <i class="iconfont icon-sousuo"></i>
-      </span>
-            <span class="header_login" slot="right">
-        <span class="header_login_text">登录|注册</span>
-      </span>
+            <router-link to="/search" class="header_search" slot="left">
+                    <i class="iconfont icon-sousuo"></i>
+            </router-link>
+            <router-link :to="userInfo._id ? '/userInfo': '/login'" class="header_login" slot="right">
+                <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
+                <span class="header_login_text iconfont icon-wode" v-else></span>
+            </router-link>
         </HeaderTop>
         <!--首页导航-->
         <nav class="msite_nav">
@@ -45,6 +46,7 @@
     import {mapState} from 'vuex'
     import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
     import ShopList from '../../components/ShopList/ShopList.vue'
+
     export default {
         data () {
             return {
@@ -59,7 +61,7 @@
         methods: {},
 
         computed: {
-            ...mapState(['address', 'categorys']),
+            ...mapState(['address', 'categorys', 'userInfo']),
             /**
              * 根据categorys 一位数组生成一个2维数组
              * 小数组中的元素个数最大是8

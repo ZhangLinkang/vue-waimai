@@ -9,6 +9,8 @@
 
     import {mapActions} from 'vuex'
     import FooterGuide from './components/FooterGuide/FooterGuide.vue'
+
+    import actions from './store/actions'
     //import actions from './store/actions'
     //import store from './store'
     export default {
@@ -18,6 +20,7 @@
             //actions.getCategorys(store)
             //this.$store.dispath('getAddress');
             this.getAddress()
+            actions.getUserInfo(this.$store)
         },
         methods: {
             ...mapActions(['getAddress'])
