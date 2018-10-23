@@ -7,5 +7,8 @@ export default {
     address: {}, // 地址信息对象
     categorys: [], // 分类数组
     shops: [], // 商家数,
-    userInfo: {}    //用户信息
+    userInfo: {},    //用户信息
+    goods: [],
+    ratings: [],
+    info: {},
 }
