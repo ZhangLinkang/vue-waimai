@@ -3,7 +3,8 @@
         <div class="goods">
             <div class="menu-wrapper" ref="menuWrapper">
                 <ul>
-                    <li class="menu-item" v-for="(good,index) in goods" :key="index" :class="{ current:index ===currentIndex }" @click="clickMenuItem(index)">
+                    <li class="menu-item" v-for="(good,index) in goods" :key="index"
+                        :class="{ current:index ===currentIndex }" @click="clickMenuItem(index)">
                         <span class="text bottom-border-1px">
                             <img class="icon" :src="good.icon" v-if="good.icon">{{good.name}}</span>
                     </li>
@@ -11,10 +12,11 @@
             </div>
             <div class="foods-wrapper" ref="foodsWrapper">
                 <ul ref="foodsUl">
-                    <li class="food-list-hook" v-for="(good,index) in goods" :key="index"  >
+                    <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
                         <h1 class="title">{{good.name}}</h1>
                         <ul>
-                            <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" @click="showFood(food)">
+                            <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods"
+                                @click="showFood(food)">
                                 <div class="icon">
                                     <img width="57" height="57" :src="food.icon">
                                 </div>
@@ -28,7 +30,7 @@
                                         <span class="now">￥{{food.price}}</span>
                                     </div>
                                     <div class="cartcontrol-wrapper">
-                                            <CartControl :food="food"></CartControl>
+                                        <CartControl :food="food"></CartControl>
                                     </div>
                                 </div>
                             </li>
@@ -36,6 +38,7 @@
                     </li>
                 </ul>
             </div>
+            <shopCart></shopCart>
         </div>
         <Food :food="food" ref="food"></Food>
     </div>
@@ -48,12 +51,14 @@
 
     import CartControl from '../../../components/CartControl/CartControl.vue'
     import Food from '../../../components/Food/Food.vue'
+    import ShopCart from '../../../components/ShopCart/ShopCart.vue'
+
     export default {
         data () {
             return {
                 scrollY: 0,     //右侧滑动的Y轴坐标
                 tops: [],        //所有右侧分类li的top组成的数组
-                food:{},
+                food: {},
             }
         },
 
@@ -103,7 +108,7 @@
 
             },
             //点击左侧列表滑动到对应的位置
-            clickMenuItem(intex) {
+            clickMenuItem (intex) {
 
                 //得到目标位置的scrollY
                 const scrollY = this.tops[intex]
@@ -111,7 +116,7 @@
                 this.foodsScroll.scrollTo(0, -scrollY, 300)
             },
 
-            showFood(food){
+            showFood (food) {
                 this.food = food
                 this.$refs.food.toggleShow()
             }
@@ -129,9 +134,10 @@
                 return index
             }
         },
-        components : {
+        components: {
             CartControl,
-            Food
+            Food,
+            ShopCart
         }
     }
 </script>
