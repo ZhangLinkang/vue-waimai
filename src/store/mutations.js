@@ -55,13 +55,13 @@ export default {
             state.cartFoods.push(food)
         } else {
             food.count++
-            console.log('11111111');
         }
     },
     [DECREMENT_FOOD_COUNT] (state, {food}) {
         if (food.count) {
             food.count--
             if (food.count === 0) {
+                //将food从carfFoods中移除
                 state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
             }
         }

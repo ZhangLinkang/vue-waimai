@@ -11,10 +11,10 @@
             </div>
             <div class="foods-wrapper" ref="foodsWrapper">
                 <ul ref="foodsUl">
-                    <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
+                    <li class="food-list-hook" v-for="(good,index) in goods" :key="index"  >
                         <h1 class="title">{{good.name}}</h1>
                         <ul>
-                            <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods">
+                            <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" @click="showFood(food)">
                                 <div class="icon">
                                     <img width="57" height="57" :src="food.icon">
                                 </div>
@@ -37,6 +37,7 @@
                 </ul>
             </div>
         </div>
+        <Food :food="food" ref="food"></Food>
     </div>
 </template>
 
@@ -46,12 +47,13 @@
     import BScroll from 'better-scroll'
 
     import CartControl from '../../../components/CartControl/CartControl.vue'
-
+    import Food from '../../../components/Food/Food.vue'
     export default {
         data () {
             return {
                 scrollY: 0,     //右侧滑动的Y轴坐标
                 tops: [],        //所有右侧分类li的top组成的数组
+                food:{},
             }
         },
 
@@ -107,6 +109,11 @@
                 const scrollY = this.tops[intex]
                 this.scrollY = scrollY
                 this.foodsScroll.scrollTo(0, -scrollY, 300)
+            },
+
+            showFood(food){
+                this.food = food
+                this.$refs.food.toggleShow()
             }
         },
 
@@ -123,7 +130,8 @@
             }
         },
         components : {
-            CartControl
+            CartControl,
+            Food
         }
     }
 </script>
