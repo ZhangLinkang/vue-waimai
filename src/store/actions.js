@@ -10,7 +10,9 @@ import {
     REST_USER_INFO,
     RECEIVE_GOODS,
     RECEIVE_RATINGS,
-    RECEIVE_INFO
+    RECEIVE_INFO,
+    INCREMENT_FOOD_COUNT,
+    DECREMENT_FOOD_COUNT
 } from './mutation-types'
 
 import {
@@ -84,11 +86,28 @@ export default {
      * @param commit
      * @returns {Promise<void>}
      */
-    async getShopInfo({commit}){
+    async getShopInfo ({commit}) {
         const result = await reqShopInfo()
-        if(result.code === 0) {
+        if (result.code === 0) {
             const info = result.data
-            commit(RECEIVE_INFO,{info})
+            commit(RECEIVE_INFO, {info})
+        }
+    },
+
+    async getShopGoods ({commit}, callback) {
+        const result = await reqShopGoods()
+        if (result.code === 0) {
+            const goods = result.data
+            commit(RECEIVE_GOODS, {goods})
+        }
+        callback && callback()
+    },
+    //同步更新food中的count值
+    updateFoodCount ({commit}, {isAdd, food}) {
+        if (isAdd) {
+            commit(INCREMENT_FOOD_COUNT, {food})
+        } else {
+            commit(DECREMENT_FOOD_COUNT, {food})
         }
     }
 }

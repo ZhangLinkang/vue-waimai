@@ -59,7 +59,7 @@ export const reqLogout = () => ajax(`${BASE_URL}/logout`)
 /**
  * 获取商家信息
  */
-export const reqShopGoods = () => ajax('goods')
+export const reqShopGoods = () => ajax('/goods')
 
 /**
  * 获取商家评论数组

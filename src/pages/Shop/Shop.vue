@@ -20,11 +20,9 @@
     import ShopHeader from '../../components/ShopHeader/ShopHeader.vue'
     import  actions from'../../store/actions'
     export default {
-
         mounted() {
             actions.getShopInfo(this.$store)
         },
-
         components: {
             ShopHeader
         }
