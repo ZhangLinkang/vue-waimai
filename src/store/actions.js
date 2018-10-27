@@ -13,7 +13,8 @@ import {
     RECEIVE_INFO,
     INCREMENT_FOOD_COUNT,
     DECREMENT_FOOD_COUNT,
-    CLEAR_CART
+    CLEAR_CART,
+    RECEIVE_SEARCH_SHOPS
 } from './mutation-types'
 
 import {
@@ -24,13 +25,12 @@ import {
     reqLogout,
     reqShopGoods,
     reqShopRatings,
-    reqShopInfo
+    reqShopInfo, reqSearchShop,
 } from '../api'
 
 export default {
     //异步获取地址
     async getAddress ({commit, state}) {
-        console.log(commit)
         //发送异步ajax请求
         const geohash = `${state.latitude},${state.longitude}`
         const result = await reqAddress(geohash)
@@ -82,6 +82,15 @@ export default {
         }
     },
 
+    async getShopRatings ({commit}, callback) {
+        const result = await reqShopRatings()
+        if (result.code === 0) {
+            const ratings = result.data
+            commit(RECEIVE_RATINGS, {ratings})
+            callback && callback()
+        }
+    },
+
     /**
      * 获取商家的信息
      * @param commit
@@ -111,7 +120,20 @@ export default {
             commit(DECREMENT_FOOD_COUNT, {food})
         }
     },
+
+    //同步清除购物车
     clearCart ({commit}) {
         commit(CLEAR_CART)
+    },
+
+    //搜索商品
+    async searchShops ({commit, state}, keyword) {
+        const geohash = state.latitude + ',' + state.longitude
+        const result = await reqSearchShop(geohash, keyword)
+        if (result.code === 0) {
+            const searchShops = result.data
+            commit(RECEIVE_SEARCH_SHOPS, {searchShops})
+        }
     }
 }
+

@@ -11,5 +11,6 @@ export default {
     goods: [],
     ratings: [],
     info: {},
-    cartFoods:[]
+    cartFoods:[],
+    searchShops: [], // 搜索得到的商家列表
 }

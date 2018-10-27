@@ -27,7 +27,8 @@ export const reqShops = ({latitude, longitude}) => ajax(`${BASE_URL}/shops`, {la
  * @param geohash
  * @param keyword
  */
-export const reqSearchShop =  (geohash,keyword) => ajax(`${BASE_URL}/search_shop}`,{geohash,keyword})
+export const reqSearchShop = (geohash, keyword) => ajax(`${BASE_URL}/search_shops`, {geohash, keyword})
+//export const reqSearchShop = (geohash, keyword) => ajax(BASE_URL+'/search_shops', {geohash, keyword})
 /**
  * 用户名密码登录
  * @param name  用户名
